@@ -13,7 +13,7 @@ Instrucciones para Ejecutar las Pruebas:
 3. Instala Selenium WebDriver para Python ejecutando 'pip install selenium' en tu terminal.
 4. Descarga el controlador de Selenium WebDriver para el navegador Chrome y asegúrate de que esté en tu PATH o especifica su ubicación en el código.
 5. En el archivo data.py, sustituye la url por una nueva que se acabe de generar.
-6. Ejecuta el archivo main.py para iniciar las pruebas automatizadas.
+6. Ejecuta el archivo Test_order_taxi.py para iniciar las pruebas automatizadas.
 7. Observa la ejecución de las pruebas en el navegador Chrome mientras Selenium simula las acciones del usuario en la aplicación web.
 8. Después de que se completen las pruebas, revisa la consola para obtener resultados o errores.
 
