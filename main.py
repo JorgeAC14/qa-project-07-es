@@ -45,7 +45,8 @@ class TestUrbanRoutes:
         routes_page.fill_phone_number(data.phone_number)
         routes_page.fill_sms_code()
         assert routes_page.get_phone_number() == data.phone_number
-
+        assert routes_page.get_sms_code() is not None, 'No se agregó ningún código'
+    
     def test_add_credit_card(self):
         routes_page = Urban_Routes_Page.UrbanRoutesPage(self.driver)
         # Agregar tarjeta de crédito
