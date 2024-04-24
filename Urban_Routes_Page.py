@@ -27,25 +27,31 @@ class UrbanRoutesPage:
     cvv_field = (By.XPATH, "//input[@class='card-input' and @id='code']")
     cambio_enfoque = (By.CLASS_NAME, 'card-wrapper')
     add_button = (By.XPATH, "//button[text()='Agregar']")
-    close_button_card = (By.XPATH, "//div[contains(@class, 'payment-picker') and contains(@class, 'open')]//div[contains(@class, 'modal')]//div[contains(@class, 'section') and contains(@class, 'active')]//button[contains(@class, 'close-button') and contains(@class, 'section-close')]")
+    close_button_card = (By.XPATH,
+                         "//div[contains(@class, 'payment-picker') and contains(@class, 'open')]//div[contains("
+                         "@class, 'modal')]//div[contains(@class, 'section') and contains(@class, 'active')]//button["
+                         "contains(@class, 'close-button') and contains(@class, 'section-close')]")
 
     # Mensaje
     message_field = (By.ID, 'comment')
 
     # Pedir manta y pañuelos
-    blanket_tissue_slider = (By.XPATH, "//div[@class='r-sw-container' and div[@class='r-sw-label' and text()='Manta y pañuelos']]//span[@class='slider round']")
+    blanket_tissue_slider = (By.XPATH,
+                             "//div[@class='r-sw-container' and div[@class='r-sw-label' and text()='Manta y "
+                             "pañuelos']]//span[@class='slider round']")
 
     # Pedir helado
     order_ice_creams_button = (By.CLASS_NAME, "counter-plus")
     ice_creams_disabled = (By.CLASS_NAME, "counter-minus disabled")
+    ice_cream_count = (By.XPATH,
+                       "//div[@class='r-counter-label' and text()='Helado']/following-sibling::div["
+                       "@class='r-counter']//div[@class='counter-value' and text()='2']")
 
     # Pedir taxi
-    #confirm_taxi = (By.XPATH, "//*[@id='root']/div/div[3]/div[4]/button")
     confirm_taxi = (By.CLASS_NAME, "smart-button-secondary")
 
     # Información del conductor en el modal
     driver_information_modal = (By.CLASS_NAME, "order-header-title")
-
 
     def __init__(self, driver):
         self.driver = driver
@@ -92,6 +98,9 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.sms_code_field).send_keys(helpers.retrieve_phone_code(self.driver))
         self.driver.find_element(*self.sms_confirm_button).click()
 
+    def get_sms_code(self):
+        return self.driver.find_element(*self.sms_code_field).get_property('value')
+
     def add_credit_card(self, card_number, card_code):
         WebDriverWait(self.driver, 3).until(
             expected_conditions.visibility_of_element_located(self.payment_method_button))
@@ -136,14 +145,24 @@ class UrbanRoutesPage:
             expected_conditions.visibility_of_element_located(self.blanket_tissue_slider))
         self.driver.find_element(*self.blanket_tissue_slider).click()
 
+    def get_blanket_tissues(self):
+        slider = self.driver.find_element(*self.blanket_tissue_slider)
+        return slider.is_selected()
+
     def order_ice_creams(self):
         self.driver.find_element(*self.order_ice_creams_button).click()
         self.driver.find_element(*self.order_ice_creams_button).click()
 
+    def get_ice_cream_count(self):
+        return self.driver.find_element(*self.ice_cream_count).text
+
     def order_taxi(self):
         self.driver.find_element(*self.confirm_taxi).click()
 
-    def wait_for_driver_information_modal(self):
+    def wait_driver_information_modal(self):
         WebDriverWait(self.driver, 40).until(
             expected_conditions.visibility_of_element_located(self.driver_information_modal)
         )
+
+    def get_driver_information_modal(self):
+        return self.driver.find_element(*self.driver_information_modal).text
